@@ -1,5 +1,5 @@
 //
-//  AppDelegate.swift
+//  NRAppDelegate.swift
 //  NewsReader
 //
 //  Created by Philip Henson on 12/11/15.
@@ -10,13 +10,18 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class NRAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    var dataController: NRDataController!
+
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+
+        // Moves Core Data functionailty out of App Delegate
+        dataController = NRDataController()
+
         return true
     }
 
@@ -62,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         // Create the coordinator and store
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("SingleViewCoreData.sqlite")
+        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("NewsReader.sqlite")
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
             try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
