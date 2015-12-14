@@ -16,7 +16,7 @@ class NRStoryDetailViewController: UIViewController, UIWebViewDelegate {
 
     weak var story: NRStoryMO?
 
-    // MARK: - View Life Cycle Methods
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         noNetworkView.hidden = true
@@ -36,7 +36,7 @@ class NRStoryDetailViewController: UIViewController, UIWebViewDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Utility Methods
+    // MARK: - Additional Helpers
     func loadURL(urlString: String) {
         webView.loadRequest(NSURLRequest(URL: NSURL(string: urlString)!))
     }

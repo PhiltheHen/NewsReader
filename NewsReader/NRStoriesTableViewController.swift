@@ -5,6 +5,7 @@
 //  Created by Philip Henson on 12/11/15.
 //  Copyright © 2015 Phil Henson. All rights reserved.
 //
+//  With some code adapted from Apple Developer Resources
 
 import UIKit
 import CoreData
@@ -20,6 +21,7 @@ class NRStoriesTableViewController: UITableViewController, NSFetchedResultsContr
     var parseOperation: NRParseOperation?
     var dateLabelFormatter = NSDateFormatter()
 
+    // Mark: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,8 +33,9 @@ class NRStoriesTableViewController: UITableViewController, NSFetchedResultsContr
         dateLabelFormatter.dateFormat = "MMM dd yyyy"
 
         // Setup refresh control
+        // Leaving blank so we can implement custom UI elements
         let refreshControl = UIRefreshControl()
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.attributedTitle = NSAttributedString(string: "")
         refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         refreshControl.tintColor = UIColor.clearColor()
         refreshControl.backgroundColor = UIColor.clearColor()
@@ -40,23 +43,6 @@ class NRStoriesTableViewController: UITableViewController, NSFetchedResultsContr
         tableView.addSubview(refreshControl)
 
         setupHeaderView()
-
-    }
-
-    func refresh(sender: AnyObject) {
-        print("refresh")
-        performParseOperationWithURL(NSURL(string: Constants.feedURLString)!)
-        self.refreshControl?.endRefreshing()
-    }
-
-    func performParseOperationWithURL(url: NSURL) {
-        if NRReachability.isConnectedToNetwork() == true {
-            parseOperation = NRParseOperation()
-            parseOperation!.parseDataWithURL(NSURL(string: Constants.feedURLString)!)
-        } else {
-            let alert = UIAlertView(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
-        }
 
     }
 
@@ -69,42 +55,12 @@ class NRStoriesTableViewController: UITableViewController, NSFetchedResultsContr
         NSNotificationCenter.defaultCenter().removeObserver(self, name: Constants.Story.errorNotificationName, object: nil)
     }
 
-    func addStories(notif: NSNotification) {
-
-        // Clear cache when we repopulate with new news stories
-         // NSFetchedResultsController.deleteCacheWithName("rootCache")
-
-        assert(NSThread.isMainThread())
-        if self.fetchedResultsController != nil {
-                do {
-                    try self.fetchedResultsController.performFetch()
-                } catch {
-                    fatalError("Failed to initialize FetchedResultsController: \(error)")
-                }
-            }else {
-                self.initializeFetchedResultsController()
-            }
-    }
-
-    func storieserror(notif: NSNotification) {
-        assert(NSThread.isMainThread())
-        handleError(notif.userInfo![Constants.Story.messageErrorKey] as! NSError)
-    }
-
-    func handleError(error: NSError) {
-        let alert = UIAlertController(title: "Error", message: "Unable to download news.", preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-        alert.addAction(okAction)
-        presentViewController(alert, animated: true, completion: nil)
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
-
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if (self.fetchedResultsController != nil) {
             return self.fetchedResultsController.sections!.count
@@ -199,13 +155,11 @@ class NRStoriesTableViewController: UITableViewController, NSFetchedResultsContr
         }
     }
 
-    
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         self.tableView.endUpdates()
     }
 
     // MARK: - Header View Methods
-
     func setupHeaderView() {
         headerView = tableView.tableHeaderView
         tableView.tableHeaderView = nil
@@ -230,9 +184,62 @@ class NRStoriesTableViewController: UITableViewController, NSFetchedResultsContr
         }
         headerView.frame = headerRect
     }
-    
+
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        updateHeaderView()
+    }
+
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         updateHeaderView()
+    }
+
+    // MARK: - Additional Helpers
+    func refresh(sender: AnyObject) {
+        print("refresh")
+        performParseOperationWithURL(NSURL(string: Constants.feedURLString)!)
+        self.refreshControl?.endRefreshing()
+    }
+
+    func performParseOperationWithURL(url: NSURL) {
+        if NRReachability.isConnectedToNetwork() == true {
+            parseOperation = NRParseOperation()
+            parseOperation!.parseDataWithURL(NSURL(string: Constants.feedURLString)!)
+        } else {
+            let alert = UIAlertView(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+        }
+
+    }
+
+    func addStories(notif: NSNotification) {
+
+        // Clear cache when we repopulate with new news stories
+        // NSFetchedResultsController.deleteCacheWithName("rootCache")
+
+        assert(NSThread.isMainThread())
+        if self.fetchedResultsController != nil {
+            do {
+                try self.fetchedResultsController.performFetch()
+            } catch {
+                fatalError("Failed to initialize FetchedResultsController: \(error)")
+            }
+        }else {
+            self.initializeFetchedResultsController()
+        }
+    }
+
+
+    // MARK: - Error Handling
+    func storieserror(notif: NSNotification) {
+        assert(NSThread.isMainThread())
+        handleError(notif.userInfo![Constants.Story.messageErrorKey] as! NSError)
+    }
+
+    func handleError(error: NSError) {
+        let alert = UIAlertController(title: "Error", message: "Unable to download news.", preferredStyle: .Alert)
+        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alert.addAction(okAction)
+        presentViewController(alert, animated: true, completion: nil)
     }
 
     // MARK: - Navigation

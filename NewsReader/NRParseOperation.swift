@@ -5,7 +5,7 @@
 //  Created by Philip Henson on 12/12/15.
 //  Copyright © 2015 Phil Henson. All rights reserved.
 //
-//  Adapted from Apple Developer Resources
+//  With some code adapted from Apple Developer Resources
 
 import Foundation
 import CoreData
