@@ -63,8 +63,8 @@
 		3A8046B31C1CBEC9001060C9 /* NRParseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NRParseOperation.swift; sourceTree = "<group>"; };
 		3A8046B51C1CC5C8001060C9 /* NRConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NRConstants.swift; sourceTree = "<group>"; };
 		3A8046B71C1CCC97001060C9 /* NRDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NRDataController.swift; sourceTree = "<group>"; };
-		3AB775851C1E305B005260BF /* NRStoryMO+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NRStoryMO+CoreDataProperties.swift"; path = "../NRStoryMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3AB775861C1E305B005260BF /* NRStoryMO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NRStoryMO.swift; path = ../NRStoryMO.swift; sourceTree = "<group>"; };
+		3AB775851C1E305B005260BF /* NRStoryMO+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NRStoryMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3AB775861C1E305B005260BF /* NRStoryMO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NRStoryMO.swift; sourceTree = "<group>"; };
 		3AB775891C1E3DEA005260BF /* ImageLicenses */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImageLicenses; sourceTree = "<group>"; };
 		3AB7758B1C1EAA25005260BF /* NRReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NRReachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
